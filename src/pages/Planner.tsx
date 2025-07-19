@@ -49,7 +49,7 @@ const Planner = () => {
 
   return (
     <div className="h-screen text-white px-4 py-7 relative">
-      <div className="mx-auto max-w-[1100px] flex gap-1 transition-all">
+      <div className="mx-auto max-w-[1250px] flex gap-1 transition-all">
         {days.map((day) => {
           const isActive = isSameDay(day.date, activeDate);
           const key = formatDateKey(day.date);

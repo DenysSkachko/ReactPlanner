@@ -101,7 +101,7 @@ const DayTabs = ({
             return (
               <div
                 key={lesson.id}
-                className={`${bgColorClass} absolute left-4 right-4 overflow-hidden flex justify-between items-center text-white rounded px-5 cursor-pointer`}
+                className={`${bgColorClass} absolute left-4 right-4 overflow-hidden flex justify-between items-center text-white rounded px-4 cursor-pointer`}
                 style={{
                   top: `${top}px`,
                   height: `${height}px`,
@@ -111,8 +111,8 @@ const DayTabs = ({
                 <div
                   className={
                     isActive
-                      ? 'text-[18px] font-extrabold'
-                      : 'mx-auto font-medium'
+                      ? 'text-[16px] font-semibold'
+                      : 'mx-auto  font-medium'
                   }
                 >
                   {lesson.studentName}
