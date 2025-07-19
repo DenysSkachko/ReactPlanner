@@ -16,7 +16,7 @@ import AllStudentsModal from '../components/AllStudentsModal';
 
 const Planner = () => {
   const today = startOfToday();
-  const [centerDate, setCenterDate] = useState(today);
+  const [_centerDate, setCenterDate] = useState(today);
   const [activeDate, setActiveDate] = useState(today);
   const [days, setDays] = useState(generateWeek(today));
   const [addLessonOpen, setAddLessonOpen] = useState(false);
@@ -26,7 +26,7 @@ const Planner = () => {
   const [generalStatsOpen, setGeneralStatsOpen] = useState(false);
   const [isStudentsModalOpen, setStudentsModalOpen] = useState(false);
 
-  const { lessons, addLesson, updateLesson, deleteLesson, allLessons } =
+  const { addLesson, updateLesson, deleteLesson, allLessons } =
     useLessons(activeDate);
 
   const handleDayClick = (clicked: Date) => {
@@ -58,7 +58,7 @@ const Planner = () => {
               key={day.id}
               onClick={() => handleDayClick(day.date)}
               className={clsx(
-                'cursor-pointer transition-all rounded-xl duration-300 ease-in-out flex flex-col justify-between outline outline-1 outline-transparent hover:outline-[var(--color-accent)] hover:scale-[1.01]',
+                'cursor-pointer transition-all rounded-xl duration-300 ease-in-out flex flex-col justify-between outline-1 outline-transparent hover:outline-[var(--color-accent)] hover:scale-[1.01]',
                 isActive
                   ? 'flex-[2] scale-100'
                   : 'flex-1 scale-95 grayscale-80 hover:grayscale-0'

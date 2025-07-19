@@ -19,7 +19,7 @@ type Props = {
   allLessons: Record<string, Lesson[]>;
 };
 
-const GeneralStatsModal: React.FC<Props> = ({ open, onClose, students, allLessons }) => {
+const GeneralStatsModal: React.FC<Props> = ({ open, onClose, allLessons }) => {
   const [mode, setMode] = useState<'week' | 'month'>('month');
   const [monthStart, setMonthStart] = useState(startOfMonth(new Date()));
   const [weekStart, setWeekStart] = useState(startOfWeek(new Date(), { weekStartsOn: 1 }));

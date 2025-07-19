@@ -24,7 +24,6 @@ const LessonModal: React.FC<LessonModalProps> = ({
   onClose,
   onUpdate,
   onDelete,
-  students,
 }) => {
   const [error, setError] = useState('');
 
@@ -81,10 +80,6 @@ const LessonModal: React.FC<LessonModalProps> = ({
     onDelete(editData.id);
     onClose();
   };
-
-  // Найдем имя ученика из массива students (чтобы всегда синхронизировать)
-  const selectedStudentName =
-    students.find((s) => s.id === editData.studentId)?.name || '';
 
   return (
     <Modal open={true} onClose={onClose}>
