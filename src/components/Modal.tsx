@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { IoCloseCircle } from 'react-icons/io5';
+import { motion, AnimatePresence } from 'framer-motion';
 
 type ModalProps = {
   open: boolean;
@@ -9,6 +10,17 @@ type ModalProps = {
 };
 
 const modalRoot = document.getElementById('modal-root')!;
+
+const backdropVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1 },
+};
+
+const modalVariants = {
+  hidden: { opacity: 0, y: 50, scale: 0.9 },
+  visible: { opacity: 1, y: 0, scale: 1 },
+  exit: { opacity: 0, y: 50, scale: 0.9 },
+};
 
 const Modal = ({ open, onClose, children }: ModalProps) => {
   useEffect(() => {
@@ -25,8 +37,6 @@ const Modal = ({ open, onClose, children }: ModalProps) => {
     };
   }, [open, onClose]);
 
-  if (!open) return null;
-
   const handleOverlayClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
       onClose();
@@ -34,25 +44,41 @@ const Modal = ({ open, onClose, children }: ModalProps) => {
   };
 
   return ReactDOM.createPortal(
-    <div
-      onClick={handleOverlayClick}
-      className="fixed inset-0 bg-black/80 flex items-center justify-center z-50"
-      role="dialog"
-      aria-modal="true"
-    >
-      <div className="relative bg-[var(--color-alt)] rounded-xl p-6 w-full max-w-lg shadow-2xl">
-        <button
-          onClick={onClose}
-          className="absolute -top-6 -right-4 text-[var(--color-accent)] text-5xl font-bold hover:text-[var(--hover-accent)] transition"
-          aria-label="Закрыть модалку"
-          type="button"
+    <AnimatePresence>
+      {open && (
+        <motion.div
+          className="fixed inset-0 flex items-center justify-center z-50"
+          style={{ backgroundColor: 'rgba(0,0,0,0.8)' }}
+          variants={backdropVariants}
+          initial="hidden"
+          animate="visible"
+          exit="hidden"
+          onClick={handleOverlayClick}
+          aria-modal="true"
+          role="dialog"
         >
-          <IoCloseCircle />
-        </button>
+          <motion.div
+            className="relative bg-[var(--color-alt)] rounded-xl p-6 w-full max-w-lg shadow-2xl"
+            variants={modalVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            transition={{ duration: 0.3, ease: 'easeOut' }}
+          >
+            <button
+              onClick={onClose}
+              className="absolute -top-6 -right-4 text-[var(--color-accent)] text-5xl font-bold hover:text-[var(--hover-accent)] transition"
+              aria-label="Закрыть модалку"
+              type="button"
+            >
+              <IoCloseCircle />
+            </button>
 
-        {children}
-      </div>
-    </div>,
+            {children}
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>,
     modalRoot
   );
 };

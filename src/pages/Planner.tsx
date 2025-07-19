@@ -2,17 +2,18 @@ import { useState } from 'react';
 import { isSameDay, startOfToday } from 'date-fns';
 import clsx from 'clsx';
 import DayTabs from '../components/DayTabs';
-import { generateWeek } from '../utils/date';
+import { generateWeek, formatDateKey } from '../utils/date';
 import { useLessons } from '../hooks/useLessons';
-import type { Student } from '../types/Student';
-import AddStudentModal from '../components/AddStudentModal';
-import AddLessonModal from '../components/AddLessonModal';
-import type { Lesson } from '../types/Lesson';
 import { useStudents } from '../hooks/useStudents';
-import { formatDateKey } from '../utils/date';
+import AddLessonModal from '../components/AddLessonModal';
+import AddStudentModal from '../components/AddStudentModal';
 import StudentsStatsModal from '../components/StudentsStatsModal';
 import GeneralStatsModal from '../components/GeneralStatsModal';
 import AllStudentsModal from '../components/AllStudentsModal';
+import type { Student } from '../types/Student';
+import type { Lesson } from '../types/Lesson';
+import Alex from '../assets/alex.png';
+import { AnimatePresence, motion } from 'framer-motion';
 
 const Planner = () => {
   const today = startOfToday();
@@ -21,11 +22,12 @@ const Planner = () => {
   const [days, setDays] = useState(generateWeek(today));
   const [addLessonOpen, setAddLessonOpen] = useState(false);
   const [addStudentOpen, setAddStudentOpen] = useState(false);
-  const { students, addStudent, updateStudent, deleteStudent } = useStudents();
   const [studentsStatsOpen, setStudentsStatsOpen] = useState(false);
   const [generalStatsOpen, setGeneralStatsOpen] = useState(false);
   const [isStudentsModalOpen, setStudentsModalOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
+  const { students, addStudent, updateStudent, deleteStudent } = useStudents();
   const { addLesson, updateLesson, deleteLesson, allLessons } =
     useLessons(activeDate);
 
@@ -46,8 +48,8 @@ const Planner = () => {
   };
 
   return (
-    <div className="min-h-screen text-white px-4 py-20">
-      <div className="mx-auto max-w-[1400px] flex gap-1 transition-all ">
+    <div className="h-screen text-white px-4 py-7 relative">
+      <div className="mx-auto max-w-[1100px] flex gap-1 transition-all">
         {days.map((day) => {
           const isActive = isSameDay(day.date, activeDate);
           const key = formatDateKey(day.date);
@@ -58,10 +60,10 @@ const Planner = () => {
               key={day.id}
               onClick={() => handleDayClick(day.date)}
               className={clsx(
-                'cursor-pointer transition-all rounded-xl duration-300 ease-in-out flex flex-col justify-between outline-1 outline-transparent hover:outline-[var(--color-accent)] hover:scale-[1.01]',
+                'cursor-pointer transition-all rounded-xl duration-300 ease-in-out flex flex-col justify-between',
                 isActive
-                  ? 'flex-[2] scale-100'
-                  : 'flex-1 scale-95 grayscale-80 hover:grayscale-0'
+                  ? 'flex-[2] hover:scale-[1.02] z-10'
+                  : 'flex-1 scale-95 grayscale-80 hover:grayscale-0 hover:scale-85'
               )}
             >
               <DayTabs
@@ -76,41 +78,86 @@ const Planner = () => {
           );
         })}
       </div>
-      <div className="absolute top-4 left-4 z-50 flex gap-2">
+
+      <div className="absolute bottom-1/3 right-4 z-50 ">
         <button
-          onClick={() => setAddLessonOpen(true)}
-          className="bg-[var(--color-colt)] hover:bg-[var(--hover-colt)] text-black px-4 py-2 rounded"
+          onClick={() => setMenuOpen((prev) => !prev)}
+          className="p-3 rounded text-6xl"
         >
-          + Урок
-        </button>
-        <button
-          onClick={() => setAddStudentOpen(true)}
-          className="bg-[var(--color-colt)] hover:bg-[var(--hover-colt)] text-black px-4 py-2 rounded"
-        >
-          + Ученик
-        </button>
-        <button
-          onClick={() => setStudentsStatsOpen(true)}
-          className="bg-[var(--color-accent)] hover:bg-[var(--hover-accent)] text-white px-4 py-2 rounded"
-          title="Статистика по ученикам"
-        >
-          Статистика учеников
-        </button>
-        <button
-          onClick={() => setGeneralStatsOpen(true)}
-          className="bg-[var(--color-alt)] hover:bg-[var(--color-accent)] text-[var(--hover-text)] hover:text-[var(--color-light)] px-4 py-2 rounded"
-          title="Общая статистика"
-        >
-          Общая статистика
-        </button>
-        <button
-          onClick={() => setStudentsModalOpen(true)}
-          className="bg-[var(--color-accent)] hover:bg-[var(--hover-accent)] text-white px-4 py-2 rounded"
-          title="Список учеников"
-        >
-          Список учеников
+          <img src={Alex} width="60" height="40"/>
         </button>
       </div>
+
+      <AnimatePresence>
+        {menuOpen && (
+          <>
+            <motion.div
+              className="fixed inset-0 bg-black/80 z-40"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setMenuOpen(false)}
+            />
+            <motion.div
+              className="absolute bottom-6 right-6 z-50 flex flex-col gap-3"
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 50 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+            >
+              <button
+                onClick={() => {
+                  setAddLessonOpen(true);
+                  setMenuOpen(false);
+                }}
+                className="bg-[var(--color-text)] hover:bg-[var(--hover-colt)] text-black px-4 py-2 rounded"
+              >
+                + Урок
+              </button>
+              <button
+                onClick={() => {
+                  setAddStudentOpen(true);
+                  setMenuOpen(false);
+                }}
+                className="bg-[var(--color-text)] hover:bg-[var(--hover-colt)] text-black px-4 py-2 rounded"
+              >
+                + Ученик
+              </button>
+              <button
+                onClick={() => {
+                  setStudentsStatsOpen(true);
+                  setMenuOpen(false);
+                }}
+                className="bg-[var(--color-accent)] hover:bg-[var(--hover-accent)] text-white px-4 py-2 rounded"
+                title="Статистика по ученикам"
+              >
+                Статистика учеников
+              </button>
+              <button
+                onClick={() => {
+                  setGeneralStatsOpen(true);
+                  setMenuOpen(false);
+                }}
+                className="bg-[var(--color-alt)] hover:bg-[var(--color-accent)] text-[var(--hover-text)] hover:text-[var(--color-light)] px-4 py-2 rounded"
+                title="Общая статистика"
+              >
+                Общая статистика
+              </button>
+              <button
+                onClick={() => {
+                  setStudentsModalOpen(true);
+                  setMenuOpen(false);
+                }}
+                className="bg-[var(--color-accent)] hover:bg-[var(--hover-accent)] text-white px-4 py-2 rounded"
+                title="Список учеников"
+              >
+                Список учеников
+              </button>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
       <AddLessonModal
         open={addLessonOpen}
         onClose={() => setAddLessonOpen(false)}

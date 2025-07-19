@@ -6,15 +6,15 @@
   line-height: 1.5;
   font-weight: 400;
 
-  --color-main: #0C0C0C; 
+  --color-main: #0c0c0c;
   --color-alt: #3c3d37;
   --color-text: #fff;
-  --color-accent: #FF4E88;
-  --hover-accent: #FF0080;
-  --color-colt: #FCC737;
-  --hover-colt: #ffe46b;
+  --color-accent: #ff4e88;
+  --hover-accent: #ff0080;
+  --color-colt: #fcc737;
+  --hover-colt: #dfdfdf;
 }
-/* #1e201e */
+
 *,
 *::before,
 *::after {
@@ -24,6 +24,7 @@
 body {
   min-height: 100vh;
   scroll-behavior: smooth;
+  overflow: hidden;
 }
 
 input {
@@ -60,4 +61,25 @@ textarea:hover {
 input:focus,
 textarea:focus {
   cursor: text;
+}
+
+@keyframes godModeMove {
+  0%,
+  100% {
+    transform: translateX(0) scale(1);
+  }
+  25% {
+    transform: translateX(3px) scale(1.05);
+  }
+  50% {
+    transform: translateX(0) scale(1.1);
+  }
+  75% {
+    transform: translateX(-3px) scale(1.05);
+  }
+}
+
+.animate-god-mode {
+  animation: godModeMove 3s ease-in-out infinite;
+  display: inline-block;
 }
