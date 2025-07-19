@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+@import 'tailwindcss';
+
+:root {
+  font-family: 'Montserrat', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  --color-main: #0C0C0C; 
+  --color-alt: #3c3d37;
+  --color-text: #fff;
+  --color-accent: #FF4E88;
+  --hover-accent: #FF0080;
+  --color-colt: #FCC737;
+  --hover-colt: #ffe46b;
+}
+/* #1e201e */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  scroll-behavior: smooth;
+}
+
+input {
+  outline: none;
+}
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+h1,
+h3,
+h3 {
+  margin: 0;
+  padding: 0;
+}
+
+button,
+select {
+  cursor: pointer;
+}
+
+input:hover,
+textarea:hover {
+  cursor: pointer;
+}
+
+input:focus,
+textarea:focus {
+  cursor: text;
+}
