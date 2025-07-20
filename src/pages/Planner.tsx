@@ -66,7 +66,7 @@ const Planner = () => {
   };
 
   return (
-    <div className="h-screen text-white px-4 md:pr-25 py-7 relative">
+    <div className=" text-white px-4 md:pr-25 py-4  relative ">
       <div className="mx-auto max-w-[1250px] flex gap-1 transition-all">
         {days.map((day) => {
           const isActive = isSameDay(day.date, activeDate);

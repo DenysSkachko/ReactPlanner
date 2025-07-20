@@ -49,7 +49,7 @@ const DayTabs = ({
   const breaks = calculateBreaks(lessons);
 
   return (
-    <div className="relative w-full h-full max-w-6xl mx-auto pt-4 bg-[var(--color-alt)] flex flex-col gap-4 rounded-xl ">
+    <div className="relative w-full h-full  max-w-6xl mx-auto pt-4 bg-[var(--color-alt)] flex flex-col gap-4 rounded-xl ">
       <div className="font-bold text-2xl text-center bg-[var(--color-accent)] py-2">
         <h2 className={` ${
           !isActive ? '' : 'animate-god-mode text-3xl ' }`}>

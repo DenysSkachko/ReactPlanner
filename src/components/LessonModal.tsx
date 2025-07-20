@@ -121,7 +121,7 @@ const LessonModal: React.FC<LessonModalProps> = ({
             min={0}
             value={editData.price ?? ''}
             onChange={(e) => onChange('price', +e.target.value)}
-            className="w-full p-2 rounded bg-[#1e1e2e] text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            className="w-full p-2 rounded bg-[var(--color-main)] text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
           />
         </div>
 
@@ -146,7 +146,7 @@ const LessonModal: React.FC<LessonModalProps> = ({
           <textarea
             value={editData.notes || ''}
             onChange={(e) => onChange('notes', e.target.value)}
-            className="w-full p-2 rounded bg-[#1e1e2e] text-white focus:outline-none focus:ring-2 focus:ring-yellow-400 resize-none"
+            className="w-full p-2 rounded bg-[var(--color-main)] text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] resize-none"
             rows={3}
             placeholder="Введите заметки"
           />

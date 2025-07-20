@@ -83,3 +83,9 @@ textarea:focus {
   animation: godModeMove 3s ease-in-out infinite;
   display: inline-block;
 }
+
+@media (max-width:648px) {
+  body {
+    overflow: auto;
+  }
+}
