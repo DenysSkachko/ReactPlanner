@@ -44,7 +44,7 @@ const TimePicker: React.FC<TimePickerProps> = ({
   return (
     <div className="flex gap-2 items-center">
       <select
-        className="bg-[var(--color-main)] text-white rounded p-2"
+        className="bg-[var(--color-main)] text-[var(--color-text)] rounded p-2"
         value={hours}
         onChange={handleHoursChange}
       >
@@ -55,10 +55,10 @@ const TimePicker: React.FC<TimePickerProps> = ({
         ))}
       </select>
 
-      <span className="text-white select-none ">:</span>
+      <span className="text-[var(--color-text)] select-none ">:</span>
 
       <select
-        className="bg-[var(--color-main)] text-[var(--color-light)] rounded p-2"
+        className="bg-[var(--color-main)] text-[var(--color-text)] rounded p-2"
         value={minutes}
         onChange={handleMinutesChange}
       >

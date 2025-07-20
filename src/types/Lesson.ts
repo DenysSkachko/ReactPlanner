@@ -9,4 +9,9 @@ export type Lesson = {
   isPaid?: boolean;
   isCancelled?: boolean;
   notes?: string;
+  topic?: string;
+  workNotes?: string;
+  homework?: string;
+  links?: string[];
+  linksHome?: string[];
 };

@@ -65,6 +65,45 @@ const Planner = () => {
     setAddStudentOpen(false);
   };
 
+  useEffect(() => {
+    if (days.length > 1) return;
+
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') swipeTo(-1);
+      if (e.key === 'ArrowRight') swipeTo(1);
+    };
+
+    let startX = 0;
+
+    const onTouchStart = (e: TouchEvent) => {
+      startX = e.touches[0].clientX;
+    };
+
+    const onTouchEnd = (e: TouchEvent) => {
+      const deltaX = e.changedTouches[0].clientX - startX;
+      if (deltaX > 50) swipeTo(-1); 
+      if (deltaX < -50) swipeTo(1); 
+    };
+
+    const swipeTo = (direction: -1 | 1) => {
+      const currentIndex = days.findIndex((d) => isSameDay(d.date, activeDate));
+      const newIndex = currentIndex + direction;
+      if (newIndex >= 0 && newIndex < days.length) {
+        handleDayClick(days[newIndex].date);
+      }
+    };
+
+    window.addEventListener('keydown', handleKey);
+    window.addEventListener('touchstart', onTouchStart);
+    window.addEventListener('touchend', onTouchEnd);
+
+    return () => {
+      window.removeEventListener('keydown', handleKey);
+      window.removeEventListener('touchstart', onTouchStart);
+      window.removeEventListener('touchend', onTouchEnd);
+    };
+  }, [days, activeDate]);
+
   return (
     <div className=" text-white px-4 md:pr-25 py-4  relative ">
       <div className="mx-auto max-w-[1250px] flex gap-1 transition-all">

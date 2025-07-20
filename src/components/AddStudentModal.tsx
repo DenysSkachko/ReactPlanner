@@ -50,13 +50,13 @@ export default function AddStudentModal({ open, onClose, onAdd }: Props) {
             const val = e.target.value;
             setDefaultPrice(val === '' ? 0 : Number(val));
           }}
-          placeholder="Сколько он тебе платит"
+          placeholder="Цена урока"
           className="w-full p-2 rounded bg-[var(--color-main)] text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
         />
         <textarea
           value={defaultNotes}
           onChange={(e) => setDefaultNotes(e.target.value)}
-          placeholder="Особая информация об особоодаренном"
+          placeholder="Заметки"
           className="w-full p-2 rounded bg-[var(--color-main)] text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] resize-none"
           rows={3}
         />

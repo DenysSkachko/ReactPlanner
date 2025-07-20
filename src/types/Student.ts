@@ -3,4 +3,6 @@ export type Student = {
   name: string;
   defaultPrice?: number;
   defaultNotes?: string;
+  phone?: string;
+  birthday?: string;
 };

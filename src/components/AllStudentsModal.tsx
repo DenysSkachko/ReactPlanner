@@ -73,7 +73,7 @@ const AllStudentsModal = ({
         <input
           value={student.name}
           onChange={(e) => handleChange(student.id, 'name', e.target.value)}
-          className="bg-white/5 rounded px-3 py-2 text-[var(--color-text)] placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+          className="rounded px-3 py-2  placeholder-white/40 bg-[var(--color-main)] text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
           placeholder="Имя"
         />
         <input
@@ -81,15 +81,29 @@ const AllStudentsModal = ({
           onChange={(e) =>
             handleChange(student.id, 'defaultPrice', e.target.value)
           }
-          className="bg-white/5 rounded px-3 py-2 text-[var(--color-text)] placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+          className="rounded px-3 py-2 placeholder-white/40 bg-[var(--color-main)] text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
           placeholder="Цена"
         />
+        <input
+          value={student.phone || ''}
+          onChange={(e) => handleChange(student.id, 'phone', e.target.value)}
+          placeholder="Телефон"
+          className="rounded px-3 py-2 placeholder-white/40 bg-[var(--color-main)] text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
+        />
+        <input
+          type="text"
+          value={student.birthday || ''}
+          onChange={(e) => handleChange(student.id, 'birthday', e.target.value)}
+          placeholder="Дата рождения"
+          className="bg-[var(--color-main)] text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] rounded px-3 py-2 placeholder-white/40"
+        />
+
         <textarea
           value={student.defaultNotes || ''}
           onChange={(e) =>
             handleChange(student.id, 'defaultNotes', e.target.value)
           }
-          className="bg-white/5 rounded px-3 py-2 text-[var(--color-text)] placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-yellow-400 resize-none"
+          className="rounded px-3 py-2  placeholder-white/40 bg-[var(--color-main)] text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] resize-none"
           placeholder="Заметка"
           rows={3}
         />

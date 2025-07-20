@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
-import { IoCloseCircle } from 'react-icons/io5';
+import { IoClose } from "react-icons/io5";
 import { motion, AnimatePresence } from 'framer-motion';
 
 type ModalProps = {
@@ -71,7 +71,7 @@ const Modal = ({ open, onClose, children }: ModalProps) => {
               aria-label="Закрыть модалку"
               type="button"
             >
-              <IoCloseCircle />
+              <IoClose />
             </button>
 
             {children}
