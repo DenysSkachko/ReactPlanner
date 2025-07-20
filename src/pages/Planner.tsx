@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { isSameDay, startOfToday } from 'date-fns';
 import clsx from 'clsx';
 import DayTabs from '../components/DayTabs';
@@ -39,6 +39,17 @@ const Planner = () => {
   const { students, addStudent, updateStudent, deleteStudent } = useStudents();
   const { addLesson, updateLesson, deleteLesson, allLessons } =
     useLessons(activeDate);
+
+  const swipeTo = useCallback(
+    (direction: -1 | 1) => {
+      const currentIndex = days.findIndex((d) => isSameDay(d.date, activeDate));
+      const newIndex = currentIndex + direction;
+      if (newIndex >= 0 && newIndex < days.length) {
+        handleDayClick(days[newIndex].date);
+      }
+    },
+    [days, activeDate]
+  );
 
   useEffect(() => {
     const handleResize = () => {
@@ -81,16 +92,8 @@ const Planner = () => {
 
     const onTouchEnd = (e: TouchEvent) => {
       const deltaX = e.changedTouches[0].clientX - startX;
-      if (deltaX > 50) swipeTo(-1); 
-      if (deltaX < -50) swipeTo(1); 
-    };
-
-    const swipeTo = (direction: -1 | 1) => {
-      const currentIndex = days.findIndex((d) => isSameDay(d.date, activeDate));
-      const newIndex = currentIndex + direction;
-      if (newIndex >= 0 && newIndex < days.length) {
-        handleDayClick(days[newIndex].date);
-      }
+      if (deltaX > 50) swipeTo(-1);
+      if (deltaX < -50) swipeTo(1);
     };
 
     window.addEventListener('keydown', handleKey);
@@ -102,7 +105,7 @@ const Planner = () => {
       window.removeEventListener('touchstart', onTouchStart);
       window.removeEventListener('touchend', onTouchEnd);
     };
-  }, [days, activeDate]);
+  }, [days, swipeTo]);
 
   return (
     <div className=" text-white px-4 md:pr-25 py-4  relative ">
