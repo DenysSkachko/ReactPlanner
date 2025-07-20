@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { isSameDay, startOfToday } from 'date-fns';
 import clsx from 'clsx';
 import DayTabs from '../components/DayTabs';
@@ -15,11 +15,20 @@ import type { Lesson } from '../types/Lesson';
 import Alex from '../assets/alex.png';
 import { AnimatePresence, motion } from 'framer-motion';
 
+const getResponsiveDayCount = () => {
+  const width = window.innerWidth;
+  if (width >= 1200) return 5;
+  if (width >= 900) return 3;
+  return 1;
+};
+
 const Planner = () => {
   const today = startOfToday();
   const [_centerDate, setCenterDate] = useState(today);
   const [activeDate, setActiveDate] = useState(today);
-  const [days, setDays] = useState(generateWeek(today));
+  const [days, setDays] = useState(
+    generateWeek(today, getResponsiveDayCount())
+  );
   const [addLessonOpen, setAddLessonOpen] = useState(false);
   const [addStudentOpen, setAddStudentOpen] = useState(false);
   const [studentsStatsOpen, setStudentsStatsOpen] = useState(false);
@@ -31,10 +40,19 @@ const Planner = () => {
   const { addLesson, updateLesson, deleteLesson, allLessons } =
     useLessons(activeDate);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setDays(generateWeek(_centerDate, getResponsiveDayCount()));
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [_centerDate]);
+
   const handleDayClick = (clicked: Date) => {
     setCenterDate(clicked);
     setActiveDate(clicked);
-    setDays(generateWeek(clicked));
+    setDays(generateWeek(clicked, getResponsiveDayCount()));
   };
 
   const handleAddLesson = (lesson: Omit<Lesson, 'id'>) => {
@@ -48,7 +66,7 @@ const Planner = () => {
   };
 
   return (
-    <div className="h-screen text-white px-4 py-7 relative">
+    <div className="h-screen text-white px-4 md:pr-25 py-7 relative">
       <div className="mx-auto max-w-[1250px] flex gap-1 transition-all">
         {days.map((day) => {
           const isActive = isSameDay(day.date, activeDate);
@@ -79,12 +97,12 @@ const Planner = () => {
         })}
       </div>
 
-      <div className="absolute bottom-1/3 right-4 z-50 ">
+      <div className="absolute bottom-4 sm:bottom-1/3 right-4 z-50 ">
         <button
           onClick={() => setMenuOpen((prev) => !prev)}
           className="p-3 rounded text-6xl"
         >
-          <img src={Alex} width="60" height="40"/>
+          <img src={Alex} width="60" height="40" />
         </button>
       </div>
 
@@ -99,7 +117,7 @@ const Planner = () => {
               onClick={() => setMenuOpen(false)}
             />
             <motion.div
-              className="absolute bottom-6 right-6 z-50 flex flex-col gap-3"
+              className="absolute bottom-[20%] sm:bottom-6 right-6 z-50 flex flex-col gap-3"
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 50 }}
