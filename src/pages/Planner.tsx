@@ -27,7 +27,9 @@ const Planner = () => {
   const today = startOfToday();
   const [_centerDate, setCenterDate] = useState(today);
   const [activeDate, setActiveDate] = useState(today);
-  const [days, setDays] = useState(generateWeek(today, getResponsiveDayCount()));
+  const [days, setDays] = useState(
+    generateWeek(today, getResponsiveDayCount())
+  );
   const [direction, setDirection] = useState<'left' | 'right'>('right');
   const [addLessonOpen, setAddLessonOpen] = useState(false);
   const [addStudentOpen, setAddStudentOpen] = useState(false);
@@ -37,7 +39,8 @@ const Planner = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const { students, addStudent, updateStudent, deleteStudent } = useStudents();
-  const { addLesson, updateLesson, deleteLesson, allLessons } = useLessons(activeDate);
+  const { addLesson, updateLesson, deleteLesson, allLessons } =
+    useLessons(activeDate);
 
   const swipeTo = useCallback(
     (delta: -1 | 1) => {
@@ -96,13 +99,22 @@ const Planner = () => {
 
   return (
     <div className="text-white px-4 md:pr-25 py-4 relative">
-      <div id="day-container" className="mx-auto max-w-[1250px] flex gap-1 transition-all relative">
+      <div
+        id="day-container"
+        className="mx-auto max-w-[1250px] flex gap-1 transition-all relative"
+      >
         {days.length === 1 && (
           <>
-            <button onClick={() => swipeTo(-1)} className="absolute left-[-10px] top-10 -translate-y-1/2 bg-white/20 hover:bg-white/50 p-2 rounded-xl z-20">
+            <button
+              onClick={() => swipeTo(-1)}
+              className="absolute left-[-10px] top-10 -translate-y-1/2 bg-white/20 hover:bg-white/50 p-2 rounded-xl z-20"
+            >
               <FaAngleLeft />
             </button>
-            <button onClick={() => swipeTo(1)} className="absolute right-[-10px] top-10 -translate-y-1/2 bg-white/20 hover:bg-white/50 p-2 rounded-xl z-20">
+            <button
+              onClick={() => swipeTo(1)}
+              className="absolute right-[-10px] top-10 -translate-y-1/2 bg-white/20 hover:bg-white/50 p-2 rounded-xl z-20"
+            >
               <FaAngleRight />
             </button>
           </>
@@ -116,9 +128,15 @@ const Planner = () => {
               animate="center"
               exit="exit"
               variants={{
-                enter: (dir) => ({ x: dir === 'right' ? 300 : -300, opacity: 0 }),
+                enter: (dir) => ({
+                  x: dir === 'right' ? 300 : -300,
+                  opacity: 0,
+                }),
                 center: { x: 0, opacity: 1 },
-                exit: (dir) => ({ x: dir === 'right' ? -300 : 300, opacity: 0 }),
+                exit: (dir) => ({
+                  x: dir === 'right' ? -300 : 300,
+                  opacity: 0,
+                }),
               }}
               transition={{ duration: 0.3 }}
               className="w-full"
@@ -133,39 +151,46 @@ const Planner = () => {
               />
             </motion.div>
           ) : (
-            days.map((day) => {
-              const isActive = isSameDay(day.date, activeDate);
-              const key = formatDateKey(day.date);
-              return (
-                <motion.div
-                  key={day.id}
-                  onClick={() => handleDayClick(day.date)}
-                  className={clsx(
-                    'cursor-pointer transition-all rounded-xl duration-300 ease-in-out flex flex-col justify-between',
-                    isActive ? 'flex-[2] hover:scale-[1.02] z-10' : 'flex-1 scale-95 grayscale-80 hover:grayscale-0 hover:scale-85'
-                  )}
-                  initial={{ opacity: 0, x: 50 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -50 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <DayTabs
-                    date={day.date}
-                    lessons={allLessons[key] || []}
-                    isActive={isActive}
-                    onDelete={deleteLesson}
-                    onUpdateLesson={updateLesson}
-                    students={students}
-                  />
-                </motion.div>
-              );
-            })
+            <div className="mx-auto max-w-[1250px] w-full flex gap-1 transition-all relative">
+              {days.map((day) => {
+                const isActive = isSameDay(day.date, activeDate);
+                const key = formatDateKey(day.date);
+                return (
+                  <motion.div
+                    key={day.id}
+                    onClick={() => handleDayClick(day.date)}
+                    className={clsx(
+                      'cursor-pointer transition-all rounded-xl duration-300 ease-in-out flex flex-col justify-between',
+                      isActive
+                        ? 'flex-[2] hover:scale-[1.02] z-10'
+                        : 'flex-1 scale-95 grayscale-80 hover:grayscale-0 hover:scale-85'
+                    )}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <DayTabs
+                      date={day.date}
+                      lessons={allLessons[key] || []}
+                      isActive={isActive}
+                      onDelete={deleteLesson}
+                      onUpdateLesson={updateLesson}
+                      students={students}
+                    />
+                  </motion.div>
+                );
+              })}
+            </div>
           )}
         </AnimatePresence>
       </div>
 
-      <div className="absolute bottom-4 md:bottom-1/3 right-4 z-50">
-        <button onClick={() => setMenuOpen((prev) => !prev)} className="p-3 rounded text-6xl">
+      <div className="absolute bottom-4 sm:bottom-1/3 right-4 z-50">
+        <button
+          onClick={() => setMenuOpen((prev) => !prev)}
+          className="p-3 rounded text-6xl"
+        >
           <img src={Alex} width="60" height="40" />
         </button>
       </div>
@@ -187,19 +212,49 @@ const Planner = () => {
               exit={{ opacity: 0, y: 50 }}
               transition={{ type: 'spring', stiffness: 300, damping: 20 }}
             >
-              <button onClick={() => { setAddLessonOpen(true); setMenuOpen(false); }} className="bg-[var(--color-text)] hover:bg-[var(--hover-colt)] text-black px-4 py-2 rounded">
+              <button
+                onClick={() => {
+                  setAddLessonOpen(true);
+                  setMenuOpen(false);
+                }}
+                className="bg-[var(--color-text)] hover:bg-[var(--hover-colt)] text-black px-4 py-2 rounded"
+              >
                 + Урок
               </button>
-              <button onClick={() => { setAddStudentOpen(true); setMenuOpen(false); }} className="bg-[var(--color-text)] hover:bg-[var(--hover-colt)] text-black px-4 py-2 rounded">
+              <button
+                onClick={() => {
+                  setAddStudentOpen(true);
+                  setMenuOpen(false);
+                }}
+                className="bg-[var(--color-text)] hover:bg-[var(--hover-colt)] text-black px-4 py-2 rounded"
+              >
                 + Ученик
               </button>
-              <button onClick={() => { setStudentsStatsOpen(true); setMenuOpen(false); }} className="bg-[var(--color-accent)] hover:bg-[var(--hover-accent)] text-white px-4 py-2 rounded">
+              <button
+                onClick={() => {
+                  setStudentsStatsOpen(true);
+                  setMenuOpen(false);
+                }}
+                className="bg-[var(--color-accent)] hover:bg-[var(--hover-accent)] text-white px-4 py-2 rounded"
+              >
                 Статистика учеников
               </button>
-              <button onClick={() => { setGeneralStatsOpen(true); setMenuOpen(false); }} className="bg-[var(--color-alt)] hover:bg-[var(--color-accent)] text-[var(--hover-text)] hover:text-[var(--color-light)] px-4 py-2 rounded">
+              <button
+                onClick={() => {
+                  setGeneralStatsOpen(true);
+                  setMenuOpen(false);
+                }}
+                className="bg-[var(--color-alt)] hover:bg-[var(--color-accent)] text-[var(--hover-text)] hover:text-[var(--color-light)] px-4 py-2 rounded"
+              >
                 Общая статистика
               </button>
-              <button onClick={() => { setStudentsModalOpen(true); setMenuOpen(false); }} className="bg-[var(--color-accent)] hover:bg-[var(--hover-accent)] text-white px-4 py-2 rounded">
+              <button
+                onClick={() => {
+                  setStudentsModalOpen(true);
+                  setMenuOpen(false);
+                }}
+                className="bg-[var(--color-accent)] hover:bg-[var(--hover-accent)] text-white px-4 py-2 rounded"
+              >
                 Список учеников
               </button>
             </motion.div>
@@ -207,11 +262,36 @@ const Planner = () => {
         )}
       </AnimatePresence>
 
-      <AddLessonModal open={addLessonOpen} onClose={() => setAddLessonOpen(false)} students={students} onAdd={handleAddLesson} />
-      <AddStudentModal open={addStudentOpen} onClose={() => setAddStudentOpen(false)} onAdd={handleAddStudent} />
-      <StudentsStatsModal open={studentsStatsOpen} onClose={() => setStudentsStatsOpen(false)} students={students} allLessons={allLessons} />
-      <GeneralStatsModal open={generalStatsOpen} onClose={() => setGeneralStatsOpen(false)} students={students} allLessons={allLessons} />
-      <AllStudentsModal open={isStudentsModalOpen} onClose={() => setStudentsModalOpen(false)} students={students} onUpdateStudent={updateStudent} onDeleteStudent={deleteStudent} />
+      <AddLessonModal
+        open={addLessonOpen}
+        onClose={() => setAddLessonOpen(false)}
+        students={students}
+        onAdd={handleAddLesson}
+      />
+      <AddStudentModal
+        open={addStudentOpen}
+        onClose={() => setAddStudentOpen(false)}
+        onAdd={handleAddStudent}
+      />
+      <StudentsStatsModal
+        open={studentsStatsOpen}
+        onClose={() => setStudentsStatsOpen(false)}
+        students={students}
+        allLessons={allLessons}
+      />
+      <GeneralStatsModal
+        open={generalStatsOpen}
+        onClose={() => setGeneralStatsOpen(false)}
+        students={students}
+        allLessons={allLessons}
+      />
+      <AllStudentsModal
+        open={isStudentsModalOpen}
+        onClose={() => setStudentsModalOpen(false)}
+        students={students}
+        onUpdateStudent={updateStudent}
+        onDeleteStudent={deleteStudent}
+      />
     </div>
   );
 };

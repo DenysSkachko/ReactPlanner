@@ -49,10 +49,10 @@ const DayTabs = ({
   const breaks = calculateBreaks(lessons);
 
   return (
-    <div className="relative w-full h-full  max-w-6xl mx-auto pt-4 bg-[var(--color-alt)] flex flex-col gap-4 rounded-xl ">
+    <div className="relative w-full h-full  max-w-6xl mx-auto pt-4 bg-[var(--color-alt)] gap-3 flex flex-col rounded-xl ">
       <div className="font-bold text-2xl text-center bg-[var(--color-accent)] py-2">
         <h2 className={` ${
-          !isActive ? '' : 'animate-god-mode text-3xl ' }`}>
+          !isActive ? '' : 'animate-god-mode text-3xl shadow-2xl' }`}>
         {format(date, 'dd MMMM', { locale: ru })}
       </h2>
       </div>
@@ -60,7 +60,7 @@ const DayTabs = ({
           {format(date, 'EEEE', { locale: ru })}
         </h3>
       <div
-        className={`flex flex-grow overflow-y-auto bg-[var(--color-alt)] rounded-xl relative h-[600px] ${
+        className={`flex flex-grow overflow-y-auto bg-[var(--color-alt)] rounded-xl relative h-[560px] ${
           !isActive ? 'opacity-50 pointer-events-none' : ''
         }`}
       >
@@ -74,7 +74,7 @@ const DayTabs = ({
                 style={{ padding: 0, margin: 0, height: 40 }}
               >
                 {hour}:00
-                {i !== 14 && (
+                {i !== 13 && (
                   <div className="absolute bottom-0 left-0 w-full border-b border-white/30" />
                 )}
               </div>
