@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { isSameDay, startOfToday } from 'date-fns';
+import { isSameDay, startOfToday, addDays } from 'date-fns';
 import clsx from 'clsx';
 import DayTabs from '../components/DayTabs';
 import { generateWeek, formatDateKey } from '../utils/date';
@@ -14,6 +14,7 @@ import type { Student } from '../types/Student';
 import type { Lesson } from '../types/Lesson';
 import Alex from '../assets/alex.png';
 import { AnimatePresence, motion } from 'framer-motion';
+import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
 
 const getResponsiveDayCount = () => {
   const width = window.innerWidth;
@@ -42,20 +43,17 @@ const Planner = () => {
 
   const swipeTo = useCallback(
     (direction: -1 | 1) => {
-      const currentIndex = days.findIndex((d) => isSameDay(d.date, activeDate));
-      const newIndex = currentIndex + direction;
-      if (newIndex >= 0 && newIndex < days.length) {
-        handleDayClick(days[newIndex].date);
-      }
+      const nextDate = addDays(activeDate, direction);
+      setActiveDate(nextDate);
+      setDays(generateWeek(nextDate, getResponsiveDayCount()));
     },
-    [days, activeDate]
+    [activeDate]
   );
 
   useEffect(() => {
     const handleResize = () => {
       setDays(generateWeek(_centerDate, getResponsiveDayCount()));
     };
-
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, [_centerDate]);
@@ -79,10 +77,8 @@ const Planner = () => {
   useEffect(() => {
     if (days.length > 1) return;
 
-    const handleKey = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft') swipeTo(-1);
-      if (e.key === 'ArrowRight') swipeTo(1);
-    };
+    const container = document.getElementById('day-container');
+    if (!container) return;
 
     let startX = 0;
 
@@ -96,50 +92,73 @@ const Planner = () => {
       if (deltaX < -50) swipeTo(1);
     };
 
-    window.addEventListener('keydown', handleKey);
-    window.addEventListener('touchstart', onTouchStart);
-    window.addEventListener('touchend', onTouchEnd);
+    container.addEventListener('touchstart', onTouchStart);
+    container.addEventListener('touchend', onTouchEnd);
 
     return () => {
-      window.removeEventListener('keydown', handleKey);
-      window.removeEventListener('touchstart', onTouchStart);
-      window.removeEventListener('touchend', onTouchEnd);
+      container.removeEventListener('touchstart', onTouchStart);
+      container.removeEventListener('touchend', onTouchEnd);
     };
   }, [days, swipeTo]);
 
   return (
-    <div className=" text-white px-4 md:pr-25 py-4  relative ">
-      <div className="mx-auto max-w-[1250px] flex gap-1 transition-all">
-        {days.map((day) => {
-          const isActive = isSameDay(day.date, activeDate);
-          const key = formatDateKey(day.date);
-          const dayLessons = allLessons[key] || [];
-
-          return (
-            <div
-              key={day.id}
-              onClick={() => handleDayClick(day.date)}
-              className={clsx(
-                'cursor-pointer transition-all rounded-xl duration-300 ease-in-out flex flex-col justify-between',
-                isActive
-                  ? 'flex-[2] hover:scale-[1.02] z-10'
-                  : 'flex-1 scale-95 grayscale-80 hover:grayscale-0 hover:scale-85'
-              )}
+    <div className="text-white px-4 md:pr-25 py-4 relative">
+      <div
+        id="day-container"
+        className="mx-auto max-w-[1250px] flex gap-1 transition-all relative"
+      >
+        {days.length === 1 && (
+          <>
+            <button
+              onClick={() => swipeTo(-1)}
+              className="absolute left-[-10px] top-10 -translate-y-1/2 bg-white/20 hover:bg-white/50 p-2 rounded-xl z-20"
             >
-              <DayTabs
-                date={day.date}
-                lessons={dayLessons}
-                isActive={isActive}
-                onDelete={deleteLesson}
-                onUpdateLesson={updateLesson}
-                students={students}
-              />
-            </div>
-          );
-        })}
+              <FaAngleLeft />
+            </button>
+            <button
+              onClick={() => swipeTo(1)}
+              className="absolute right-[-10px] top-10 -translate-y-1/2 bg-white/20 hover:bg-white/50 p-2 rounded-xl z-20"
+            >
+              <FaAngleRight />
+            </button>
+          </>
+        )}
+        <AnimatePresence mode="wait" initial={false}>
+          {days.map((day) => {
+            const isActive = isSameDay(day.date, activeDate);
+            const key = formatDateKey(day.date);
+            const dayLessons = allLessons[key] || [];
+
+            return (
+              <motion.div
+                key={day.id}
+                onClick={() => handleDayClick(day.date)}
+                className={clsx(
+                  'cursor-pointer transition-all rounded-xl duration-300 ease-in-out flex flex-col justify-between',
+                  isActive
+                    ? 'flex-[2] hover:scale-[1.02] z-10'
+                    : 'flex-1 scale-95 grayscale-80 hover:grayscale-0 hover:scale-85'
+                )}
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -50 }}
+                transition={{ duration: 0.3 }}
+              >
+                <DayTabs
+                  date={day.date}
+                  lessons={dayLessons}
+                  isActive={isActive}
+                  onDelete={deleteLesson}
+                  onUpdateLesson={updateLesson}
+                  students={students}
+                />
+              </motion.div>
+            );
+          })}
+        </AnimatePresence>
       </div>
 
-      <div className="absolute bottom-4 sm:bottom-1/3 right-4 z-50 ">
+      <div className="absolute bottom-4 sm:bottom-1/3 right-4 z-50">
         <button
           onClick={() => setMenuOpen((prev) => !prev)}
           className="p-3 rounded text-6xl"
@@ -189,7 +208,6 @@ const Planner = () => {
                   setMenuOpen(false);
                 }}
                 className="bg-[var(--color-accent)] hover:bg-[var(--hover-accent)] text-white px-4 py-2 rounded"
-                title="Статистика по ученикам"
               >
                 Статистика учеников
               </button>
@@ -199,7 +217,6 @@ const Planner = () => {
                   setMenuOpen(false);
                 }}
                 className="bg-[var(--color-alt)] hover:bg-[var(--color-accent)] text-[var(--hover-text)] hover:text-[var(--color-light)] px-4 py-2 rounded"
-                title="Общая статистика"
               >
                 Общая статистика
               </button>
@@ -209,7 +226,6 @@ const Planner = () => {
                   setMenuOpen(false);
                 }}
                 className="bg-[var(--color-accent)] hover:bg-[var(--hover-accent)] text-white px-4 py-2 rounded"
-                title="Список учеников"
               >
                 Список учеников
               </button>
