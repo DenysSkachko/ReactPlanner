@@ -163,7 +163,7 @@ const Planner = () => {
                       'cursor-pointer transition-all rounded-xl duration-300 ease-in-out flex flex-col justify-between',
                       isActive
                         ? 'flex-[2] hover:scale-[1.02] z-10'
-                        : 'flex-1 scale-95 grayscale-80 hover:grayscale-0 hover:scale-85'
+                        : 'flex-1 scale-95 grayscale-50 hover:grayscale-0 hover:scale-85 animate-pulse'
                     )}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
