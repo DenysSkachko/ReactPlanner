@@ -104,7 +104,7 @@ const AllStudentsModal = ({
             handleChange(student.id, 'defaultNotes', e.target.value)
           }
           className="rounded px-3 py-2  placeholder-white/40 bg-[var(--color-main)] text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] resize-none"
-          placeholder="Заметка"
+          placeholder="Заметки"
           rows={3}
         />
         <div className="flex justify-between">

@@ -48,7 +48,7 @@ const LinksEditor: React.FC<LinksEditorProps> = ({ links, onChange }) => {
         ))}
       </ul>
 
-      <div className="flex gap-2">
+      <div className="flex justify-between gap-2">
         <input
           type="url"
           placeholder="Добавить ссылку"
@@ -59,7 +59,7 @@ const LinksEditor: React.FC<LinksEditorProps> = ({ links, onChange }) => {
         <button
           type="button"
           onClick={handleAddLink}
-          className="bg-[var(--color-accent)] text-white px-3 rounded hover:bg-[var(--hover-accent)]"
+          className="bg-[var(--color-accent)] text-white text-sm px-1 sm:px-3 rounded hover:bg-[var(--hover-accent)]"
         >
           Добавить
         </button>

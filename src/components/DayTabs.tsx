@@ -65,7 +65,7 @@ const DayTabs = ({
         }`}
       >
         <div className="w-16 border-r border-white/30 flex flex-col select-none">
-          {[...Array(15)].map((_, i) => {
+          {[...Array(14)].map((_, i) => {
             const hour = i + DAY_START_HOUR;
             return (
               <div

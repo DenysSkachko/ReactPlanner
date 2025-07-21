@@ -90,7 +90,7 @@ const LessonModal: React.FC<LessonModalProps> = ({
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`w-full px-6 py-2 font-medium transition-colors text-center ${
+              className={`w-full text-sm sm:text-lg px-2 sm:px-6 py-2 font-medium transition-colors text-center ${
                 activeTab === tab
                   ? 'text-[var(--color-text)]'
                   : 'text-gray-400 hover:text-[var(--color-accent)]'
@@ -127,10 +127,10 @@ const LessonModal: React.FC<LessonModalProps> = ({
                 {editData.studentName || 'Неизвестный ученик'}
               </div>
 
-              <div className="flex justify-center gap-10">
+              <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-10">
                 <div>
                   <label className="text-sm text-center block mb-1 select-none">
-                    Время начала
+                    Время начала 
                   </label>
                   <TimePicker
                     value={editData.start}
@@ -155,7 +155,7 @@ const LessonModal: React.FC<LessonModalProps> = ({
                 </div>
               </div>
 
-              <div className="flex justify-between">
+              <div className="flex justify-between gap-10">
                 <div>
                   <label className="text-sm text-center block mb-1 select-none">
                     Сумма
@@ -272,24 +272,24 @@ const LessonModal: React.FC<LessonModalProps> = ({
           <div className="text-red-500 text-center font-semibold">{error}</div>
         )}
 
-        <div className="flex justify-end gap-3 mt-6">
+        <div className="flex justify-center sm:justify-end gap-2 mt-6">
           <button
             onClick={handleSave}
-            className="bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded transition"
+            className="bg-green-500 hover:bg-green-700 text-white py-2 px-2 sm:px-4 rounded transition"
           >
             Сохранить
           </button>
 
           <button
             onClick={handleDelete}
-            className="bg-red-500 hover:bg-red-700 text-white py-2 px-4 rounded transition"
+            className="bg-red-500 hover:bg-red-700 text-white py-2 px-2 sm:px-4 rounded transition"
           >
             Удалить
           </button>
 
           <button
             onClick={onClose}
-            className="bg-gray-600 hover:bg-gray-700 text-white py-2 px-4 rounded transition"
+            className="bg-gray-600 hover:bg-gray-700 text-white py-2 px-2 sm:px-4 rounded transition"
           >
             Отмена
           </button>
