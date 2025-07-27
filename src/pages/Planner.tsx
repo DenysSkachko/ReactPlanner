@@ -186,7 +186,7 @@ const Planner = () => {
         </AnimatePresence>
       </div>
 
-      <div className="absolute bottom-4 sm:bottom-1/3 right-4 z-50">
+      <div className="absolute bottom-4 sm:bottom-1/3 right-4 z-45  ">
         <button
           onClick={() => setMenuOpen((prev) => !prev)}
           className="p-3 rounded text-6xl"

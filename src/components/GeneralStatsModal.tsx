@@ -22,7 +22,9 @@ type Props = {
 const GeneralStatsModal: React.FC<Props> = ({ open, onClose, allLessons }) => {
   const [mode, setMode] = useState<'week' | 'month'>('month');
   const [monthStart, setMonthStart] = useState(startOfMonth(new Date()));
-  const [weekStart, setWeekStart] = useState(startOfWeek(new Date(), { weekStartsOn: 1 }));
+  const [weekStart, setWeekStart] = useState(
+    startOfWeek(new Date(), { weekStartsOn: 1 })
+  );
 
   const allLessonsArray = useMemo(() => {
     return Object.entries(allLessons).flatMap(([date, lessons]) =>
@@ -48,10 +50,12 @@ const GeneralStatsModal: React.FC<Props> = ({ open, onClose, allLessons }) => {
   const cancelledLessons = filteredLessons.filter((l) => l.isCancelled).length;
   const paidLessons = filteredLessons.filter((l) => l.isPaid).length;
   const totalEarned = filteredLessons.reduce(
-    (sum, l) => (l.isCancelled ? sum : sum + (l.price ?? 0)),
+    (sum, l) => (l.isPaid && !l.isCancelled ? sum + (l.price ?? 0) : sum),
     0
   );
-  const uniqueStudentsCount = new Set(filteredLessons.map((l) => l.studentId)).size;
+
+  const uniqueStudentsCount = new Set(filteredLessons.map((l) => l.studentId))
+    .size;
 
   const handlePrevMonth = () => {
     const prev = new Date(monthStart);
@@ -139,8 +143,7 @@ const GeneralStatsModal: React.FC<Props> = ({ open, onClose, allLessons }) => {
             Оплачено уроков: <strong>{paidLessons}</strong>
           </li>
           <li>
-            Всего заработано:{' '}
-            <strong>{totalEarned.toFixed(2)} грн</strong>
+            Всего заработано: <strong>{totalEarned.toFixed(2)} грн</strong>
           </li>
           <li>
             Уникальных учеников: <strong>{uniqueStudentsCount}</strong>

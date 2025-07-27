@@ -60,7 +60,7 @@ const DayTabs = ({
           {format(date, 'EEEE', { locale: ru })}
         </h3>
       <div
-        className={`flex flex-grow overflow-y-auto bg-[var(--color-alt)] rounded-xl relative h-[560px] ${
+        className={`flex flex-grow overflow-y-auto bg-[var(--color-alt)] rounded-b-xl  relative h-[560px] ${
           !isActive ? 'opacity-50 pointer-events-none' : ''
         }`}
       >
