@@ -15,6 +15,8 @@ import type { Lesson } from '../types/Lesson';
 import Alex from '../assets/alex.png';
 import { AnimatePresence, motion } from 'framer-motion';
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
+import AddResourcesModal from '../components/AddResourcesModal';
+
 
 const getResponsiveDayCount = () => {
   const width = window.innerWidth;
@@ -37,6 +39,8 @@ const Planner = () => {
   const [generalStatsOpen, setGeneralStatsOpen] = useState(false);
   const [isStudentsModalOpen, setStudentsModalOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [resourcesOpen, setResourcesOpen] = useState(false);
+
 
   const { students, addStudent, updateStudent, deleteStudent } = useStudents();
   const { addLesson, updateLesson, deleteLesson, allLessons } =
@@ -257,6 +261,17 @@ const Planner = () => {
               >
                 Список учеников
               </button>
+
+              <button
+  onClick={() => {
+    setResourcesOpen(true);
+    setMenuOpen(false);
+  }}
+  className="bg-[var(--color-alt)] hover:bg-[var(--hover-accent)] text-[var(--hover-text)] hover:text-[var(--color-light)] px-4 py-2 rounded"
+>
+  + Ресурсы
+</button>
+
             </motion.div>
           </>
         )}
@@ -292,6 +307,11 @@ const Planner = () => {
         onUpdateStudent={updateStudent}
         onDeleteStudent={deleteStudent}
       />
+      <AddResourcesModal
+  open={resourcesOpen}
+  onClose={() => setResourcesOpen(false)}
+/>
+
     </div>
   );
 };

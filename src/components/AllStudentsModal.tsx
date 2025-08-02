@@ -49,7 +49,8 @@ const AllStudentsModal = ({
 
   return (
     <Modal open={open} onClose={onClose}>
-      <h2 className="text-xl font-semibold text-white mb-10 text-center">
+      <div className="max-h-[80vh] overflow-y-auto pr-2">
+        <h2 className="text-xl font-semibold text-white mb-10 text-center">
         Все ученики
       </h2>
 
@@ -126,6 +127,7 @@ const AllStudentsModal = ({
             Данные успешно обновлены!
           </div>
         )}
+      </div>
       </div>
     </Modal>
   );
